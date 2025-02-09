@@ -1,0 +1,85 @@
+@startuml
+
+class User {
+    +id: int <<PK>>
+    +username: String
+    +email: String
+    +password: String
+    +role: String
+    +total_point_reward: int
+    +total_point_exp: int
+}
+
+class ModulPembelajaran {
+    +id: int <<PK>>
+    +name: String
+    +short_description: String
+    +overview: String
+    +objective: String
+    +level: String
+    +point_exchange: int
+}
+
+class Materi {
+    +id: int <<PK>>
+    +id_modul_pembelajaran: int <<FK>>
+    +name: String
+    +materi: String
+    +question: String
+    +answer_1: String
+    +answer_2: String
+    +answer_3: String
+    +answer_4: String
+    +correct_answer: String
+    +point_reward: int
+    +point_exp: int
+}
+
+class MyClass {
+    +id: int <<PK>>
+    +id_module_pembelajaran: int <<FK>>
+    +id_user: int <<FK>>
+}
+
+class ProgressMateri {
+    +id: int <<PK>>
+    +id_materi: int <<FK>>
+    +id_user: int <<FK>>
+    +status: String
+}
+
+class Rating {
+    +id: int <<PK>>
+    +id_modul_pembelajaran: int <<FK>>
+    +id_user: int <<FK>>
+    +rating: int
+}
+
+class Activity {
+    +id: int <<PK>>
+    +id_user: int <<FK>>
+    +name: String
+}
+
+class ProgressQuiz {
+    +id: int <<PK>>
+    +id_materi: int <<FK>>
+    +status: String
+}
+
+' Relationships
+User  "1" -- "0..*" MyClass : has
+User  "1" -- "0..*" ProgressMateri : has
+User  "1" -- "0..*" Rating : gives
+User  "1" -- "0..*" Activity : performs
+User  "1" -- "0..*" ProgressQuiz : takes
+
+ModulPembelajaran "1" -- "0..*" Materi : contains
+ModulPembelajaran "1" -- "0..*" MyClass : includes
+ModulPembelajaran "1" -- "0..*" Rating : receives
+
+Materi "1" -- "0..*" ProgressMateri : tracks
+Materi "1" -- "0..*" ProgressQuiz : includes
+
+
+@enduml

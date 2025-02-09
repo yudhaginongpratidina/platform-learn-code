@@ -1,0 +1,28 @@
+@startuml
+
+actor User
+participant "Sistem" as System
+database "Database" as DB
+
+User  -> System : Memilih modul di halaman landing page
+System -> DB : Query data modul
+DB --> System : Mengembalikan data modul
+System -> User : Menampilkan halaman detail modul
+
+User  -> System : Mengklik tombol enrolled
+System -> DB : Cek total point user
+DB --> System : Mengembalikan total point user
+
+alt Total point tidak cukup
+    System -> User : Tampilkan pesan "Point Anda tidak cukup"
+else Total point cukup
+    System -> DB : Kurangi total point user dengan point modul
+    DB --> System : Konfirmasi update total point
+
+    System -> DB : Tambahkan data modul ke tabel my_class
+    DB --> System : Konfirmasi penambahan data
+
+    System -> User : Arahkan ke halaman my class
+end
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+
+actor User
+participant "Sistem" as System
+database "Database" as DB
+
+User  -> System : Masuk ke halaman my class
+System -> DB : Query modul yang di-enrolled oleh user
+DB --> System : Mengembalikan data modul
+System -> User : Menampilkan data modul di halaman my class
+
+User  -> System : Memilih salah satu modul
+System -> DB : Query data list materi
+DB --> System : Mengembalikan data list materi
+System -> User : Menampilkan data materi di halaman modul
+
+User  -> System : Memilih salah satu materi
+System -> DB : Query data materi
+DB --> System : Mengembalikan data materi
+System -> User : Mengarahkan ke halaman materi
+
+User  -> System : Mengerjakan quiz
+alt Jawaban benar
+    System -> DB : Tambahkan point reward ke total point user
+    DB --> System : Konfirmasi update total point
+else Jawaban salah
+    System -> User : Tampilkan pesan "Jawaban Anda salah, silahkan coba lagi"
+end
+
+alt User sudah pernah mengerjakan
+    System -> User : Tampilkan pesan "Mohon maaf, quiz sudah pernah dikerjakan"
+else User belum pernah mengerjakan
+    User -> System : Mengklik tombol mark complete
+    System -> DB : Tambahkan point exp ke total point exp user
+    DB --> System : Konfirmasi update total point exp
+end
+
+System -> User : Mengarahkan ke halaman modul kembali
+
+@enduml
